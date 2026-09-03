@@ -276,6 +276,7 @@ Prioritaskan foto asli unit PodaRentCar.
 - Hero memakai video asli `public/hero.mp4`, dipotong dengan `object-fit: cover`, mempunyai kontrol putar/jeda, dan berhenti otomatis bila pengguna memilih reduced motion.
 - Frame video asli digunakan sebagai poster awal agar perpindahan menuju autoplay terasa mulus tanpa ilustrasi fallback.
 - Hero hanya memuat satu pesan utama, CTA, dan harga awal; penjelasan layanan yang lebih panjang ditempatkan setelah hero.
+- Frasa “Danau Toba” pada judul hero memakai aksen Playfair Display italic berwarna vermilion dan garis geometris tipis. Aksen ini memberi rasa lokal tanpa menyalin motif gorga tertentu atau memenuhi halaman dengan ornamen.
 - Jangan mengganti tipe mobil hanya karena stok foto terlihat lebih menarik.
 - Hindari plat nomor terbaca jika ada pertimbangan privasi.
 - Jika menampilkan orang, pastikan ada izin penggunaan.

@@ -155,7 +155,7 @@ export default function App() {
           <div className="container hero__grid">
             <div className="hero__content">
               <div className="hero__location"><MapPin size={16} aria-hidden="true" /> Rental mobil lokal di Silangit</div>
-              <h1>Rental mobil Silangit untuk perjalanan Danau Toba yang lebih tenang.</h1>
+              <h1>Rental mobil Silangit untuk perjalanan <span className="hero__title-accent">Danau Toba</span> yang lebih tenang.</h1>
               <div className="hero__actions">
                 <button className="button button--primary button--large" type="button" onClick={() => openBooking()}>
                   Pilih mobil sekarang <ArrowRight size={19} aria-hidden="true" />

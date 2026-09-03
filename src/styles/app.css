@@ -2419,6 +2419,30 @@
   text-shadow: 0 3px 24px rgba(0, 0, 0, 0.28);
 }
 
+.hero__title-accent {
+  position: relative;
+  display: inline-block;
+  color: #ff7468;
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+  text-shadow: 0 3px 22px rgba(74, 10, 10, 0.42);
+}
+
+.hero__title-accent::after {
+  content: "";
+  position: absolute;
+  right: 0.02em;
+  bottom: -0.02em;
+  left: 0.07em;
+  height: 4px;
+  opacity: 0.9;
+  background: linear-gradient(90deg, transparent, #ff7468 18%, #f8d7cf 50%, #ff7468 82%, transparent);
+  clip-path: polygon(0 50%, 8% 0, 16% 50%, 24% 0, 32% 50%, 40% 0, 48% 50%, 56% 0, 64% 50%, 72% 0, 80% 50%, 88% 0, 100% 50%, 88% 100%, 80% 50%, 72% 100%, 64% 50%, 56% 100%, 48% 50%, 40% 100%, 32% 50%, 24% 100%, 16% 50%, 8% 100%);
+}
+
 .hero--video-background .hero__location {
   border-color: rgba(255, 255, 255, 0.32);
   background: rgba(6, 47, 70, 0.62);
