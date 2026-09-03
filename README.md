@@ -168,8 +168,8 @@ export const fleet = [
     passengerCapacityWithDriver: 6,
     totalSeatsSelfDrive: 7,
     capacityLabel: "Hingga 6 penumpang + driver",
-    fuelLabel: "Diesel / Bensin",
-    fuelNeedsConfirmation: true,
+    fuelLabel: "Diesel",
+    fuelNeedsConfirmation: false,
     allInPrice: 1000000,
     selfDrivePrice: 500000,
     bodyType: "mpv",
@@ -283,22 +283,35 @@ export function openWhatsApp(number, message) {
 
 ~~~js
 export function buildCarBookingMessage(booking) {
+  const rows = [
+    ["Nama", booking.name],
+    ["No. WhatsApp", booking.phone],
+    ["Mobil", booking.vehicleName],
+    ["Paket", booking.packageLabel],
+    ["Waktu pemakaian", booking.usageLabel],
+    ["Tanggal mulai", booking.startDate],
+    ["Durasi", booking.days + " hari"],
+    ["Jumlah penumpang", booking.passengers],
+    ["Lokasi jemput", booking.pickupLocation],
+    ["Tujuan/rute", booking.destination],
+    ["Estimasi tarif sewa", booking.formattedEstimate],
+    ["Catatan", booking.notes || "-"]
+  ]
+  const longestLabel = Math.max(...rows.map(([label]) => label.length))
+  const details = rows
+    .map(([label, value]) => label.padEnd(longestLabel) + " : " + value)
+    .join("\n")
+
   return [
-    "Halo PodaRentCar, saya ingin mengecek ketersediaan kendaraan.",
+    "*PERMINTAAN SEWA MOBIL*",
+    "_Halo PodaRentCar, saya ingin mengecek ketersediaan kendaraan._",
     "",
-    "Nama: " + booking.name,
-    "No. WhatsApp: " + booking.phone,
-    "Mobil: " + booking.vehicleName,
-    "Paket: " + booking.packageLabel,
-    "Tanggal mulai: " + booking.startDate,
-    "Durasi: " + booking.days + " hari",
-    "Jumlah penumpang: " + booking.passengers,
-    "Lokasi jemput: " + booking.pickupLocation,
-    "Tujuan/rute: " + booking.destination,
-    "Estimasi tarif sewa: " + booking.formattedEstimate,
-    "Catatan: " + (booking.notes || "-"),
+    "*DETAIL PEMESANAN*",
+    "```",
+    details,
+    "```",
     "",
-    "Mohon konfirmasi ketersediaan, cakupan rute, syarat, dan harga final. Terima kasih."
+    "_Mohon konfirmasi ketersediaan, cakupan rute, syarat, dan harga final. Terima kasih._"
   ].join("\n")
 }
 ~~~

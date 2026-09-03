@@ -107,16 +107,16 @@ Kapasitas “All In” dihitung sebagai penumpang di luar driver. Untuk unit 7-s
 
 | ID | Kendaraan | Kategori | Kapasitas nyaman All In | BBM yang ditampilkan | All In / hari | Lepas Kunci / hari |
 |---|---|---|---:|---|---:|---:|
-| hiace-premio | Hiace Premio | Rombongan premium | 10–12 penumpang* | Diesel | Rp1.700.000 | Tidak tersedia |
+| hiace-premio | Hiace Premio | Rombongan premium | Hingga 14 penumpang | Diesel | Rp1.700.000 | Tidak tersedia |
 | hiace-commuter | Hiace Commuter | Rombongan | Hingga 15 penumpang* | Diesel | Rp1.500.000 | Tidak tersedia |
 | fortuner | Toyota Fortuner | SUV premium | Hingga 6 penumpang + driver | Diesel* | Rp1.700.000 | Tidak tersedia |
 | pajero | Mitsubishi Pajero Sport | SUV premium | Hingga 6 penumpang + driver | Diesel | Rp1.700.000 | Tidak tersedia |
 | alphard | Toyota Alphard | MPV luxury | Hingga 6 penumpang + driver | Bensin / Hybrid* | Rp2.700.000 | Tidak tersedia |
 | innova-zenix | Innova Zenix | MPV premium | Hingga 6 penumpang + driver | Bensin / Hybrid* | Rp1.400.000 | Tidak tersedia |
-| innova-reborn | Innova Reborn | MPV keluarga | Hingga 6 penumpang + driver | Diesel / Bensin* | Rp1.000.000 | Rp500.000 |
+| innova-reborn | Innova Reborn | MPV keluarga | Hingga 6 penumpang + driver | Diesel | Rp1.000.000 | Rp500.000 |
 | avanza-veloz | Avanza Veloz | MPV keluarga | Hingga 6 penumpang + driver | Bensin* | Rp800.000 | Rp400.000 |
 | avanza-all-new | Avanza All New | MPV ekonomis | Hingga 6 penumpang + driver | Bensin | Rp700.000 | Rp350.000 |
-| rush-terios | Rush / Terios | SUV keluarga | Hingga 6 penumpang + driver | Bensin | Rp800.000 | Rp350.000 |
+| rush-terios | Rush / Terios | SUV keluarga | Hingga 6 penumpang + driver | Bensin | Rp800.000 | Rp400.000 |
 
 \* Harus dikonfirmasi terhadap unit aktual milik operator sebelum situs dipublikasikan. Konfigurasi kursi dan jenis mesin dapat berbeda menurut tahun, tipe, modifikasi kabin, atau unit yang tersedia.
 
@@ -138,7 +138,7 @@ Nama tampilan: **All In — Driver + BBM**
 
 - Harga sewa sudah termasuk jasa driver dan BBM.
 - Penggunaan dalam area Danau Toba.
-- Penggunaan maksimal 24 jam per hari.
+- Layanan driver maksimal 12 jam perjalanan per hari.
 - Gratis satu kali penjemputan di bandara pada awal pemakaian.
 - Gratis satu kali pengantaran ke bandara pada akhir pemakaian.
 
@@ -171,6 +171,7 @@ Nama tampilan: **Lepas Kunci — Tanpa Driver & BBM**
 ### Termasuk
 
 - Unit kendaraan selama durasi yang disepakati.
+- Pemakaian bebas 24 jam per hari.
 
 ### Tidak termasuk
 
@@ -274,36 +275,45 @@ Label harus selalu terlihat; placeholder hanya menjadi contoh, bukan pengganti l
 ### Sewa mobil
 
 ~~~text
-Halo PodaRentCar, saya ingin mengecek ketersediaan kendaraan.
+*PERMINTAAN SEWA MOBIL*
+_Halo PodaRentCar, saya ingin mengecek ketersediaan kendaraan._
 
-Nama: {nama}
-No. WhatsApp: {telepon}
-Mobil: {kendaraan}
-Paket: {All In — Driver + BBM | Lepas Kunci — Tanpa Driver & BBM}
-Tanggal mulai: {tanggal}
-Durasi: {jumlahHari} hari
-Jumlah penumpang: {jumlahPenumpang}
-Lokasi jemput: {lokasiJemput}
-Tujuan/rute: {tujuan}
-Estimasi tarif sewa: {estimasi}
-Catatan: {catatan atau "-"}
+*DETAIL PEMESANAN*
+```
+Nama                 : {nama}
+No. WhatsApp         : {telepon}
+Mobil                : {kendaraan}
+Paket                : {All In — Driver + BBM | Lepas Kunci — Tanpa Driver & BBM}
+Waktu pemakaian      : {Driver maksimal 12 jam perjalanan per hari | Bebas 24 jam per hari}
+Tanggal mulai        : {tanggal}
+Durasi               : {jumlahHari} hari
+Jumlah penumpang     : {jumlahPenumpang}
+Lokasi jemput        : {lokasiJemput}
+Tujuan/rute          : {tujuan}
+Estimasi tarif sewa  : {estimasi}
+Catatan              : {catatan atau "-"}
+```
 
-Mohon konfirmasi ketersediaan, cakupan rute, syarat, dan harga final. Terima kasih.
+_Mohon konfirmasi ketersediaan, cakupan rute, syarat, dan harga final. Terima kasih._
 ~~~
 
 ### Ambulans
 
 ~~~text
-Halo PodaRentCar, saya ingin menanyakan layanan sewa ambulans.
+*PERMINTAAN SEWA AMBULANS*
+_Halo PodaRentCar, saya ingin menanyakan layanan sewa ambulans._
 
-Nama: {nama}
-No. WhatsApp: {telepon}
-Tanggal dan waktu: {tanggalWaktu}
-Lokasi jemput: {lokasiJemput}
-Tujuan: {tujuan}
-Kebutuhan singkat: {kebutuhan}
+*DETAIL KEBUTUHAN*
+```
+Nama                : {nama}
+No. WhatsApp        : {telepon}
+Tanggal dan waktu   : {tanggalWaktu}
+Lokasi jemput       : {lokasiJemput}
+Tujuan              : {tujuan}
+Kebutuhan singkat   : {kebutuhan}
+```
 
-Mohon info ketersediaan dan harganya. Terima kasih.
+_Mohon info ketersediaan dan harganya. Terima kasih._
 ~~~
 
 Pesan dibentuk di browser dan di-URL-encode sebelum membuka:
@@ -414,18 +424,17 @@ Jangan mengirim nama, nomor WhatsApp, lokasi jemput, atau catatan perjalanan ke 
 
 1. Apakah lokasi Google Maps bernama “Laskar Rental Bandara Silangit” memang lokasi resmi PodaRentCar.
 2. Alamat teks lengkap dan jam operasional.
-3. Kapasitas kursi aktual setiap unit, khususnya Hiace.
-4. Jenis BBM/varian mesin aktual Fortuner, Alphard, Zenix, Reborn, dan Veloz.
-5. Apakah semua harga benar-benar berlaku per 24 jam.
-6. Kebijakan overtime.
-7. Definisi pasti area Danau Toba dan biaya rute luar area.
-8. Syarat lengkap Lepas Kunci.
-9. Apakah harga sudah termasuk pajak.
-10. Fasilitas dan batas layanan ambulans.
-11. Foto kendaraan asli yang boleh digunakan.
-12. Bukti testimonial atau rating jika bagian social proof akan dipublikasikan.
+3. Kapasitas kursi aktual unit lain, khususnya Hiace Commuter.
+4. Jenis BBM/varian mesin aktual Fortuner, Alphard, Zenix, dan Veloz.
+5. Kebijakan overtime.
+6. Definisi pasti area Danau Toba dan biaya rute luar area.
+7. Syarat lengkap Lepas Kunci.
+8. Apakah harga sudah termasuk pajak.
+9. Fasilitas dan batas layanan ambulans.
+10. Foto kendaraan asli yang boleh digunakan.
+11. Bukti testimonial atau rating jika bagian social proof akan dipublikasikan.
 
-Sebelum dua belas poin ini disahkan, website harus memakai bahasa “estimasi”, “hingga”, “tergantung unit”, dan “konfirmasi melalui WhatsApp”.
+Sebelum sebelas poin ini disahkan, website harus memakai bahasa “estimasi”, “hingga”, “tergantung unit”, dan “konfirmasi melalui WhatsApp”.
 
 ## 23. Referensi spesifikasi awal
 

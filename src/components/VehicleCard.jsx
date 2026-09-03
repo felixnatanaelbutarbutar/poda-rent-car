@@ -21,12 +21,12 @@ export function VehicleCard({ vehicle, onChoose }) {
         </div>
         <div className="vehicle-card__prices">
           <div className="price-row">
-            <span><strong>All In</strong><small>Driver + BBM</small></span>
+            <span><strong>All In</strong><small>Driver + BBM · maks. 12 jam</small></span>
             <span className="price"><strong>{formatRupiah(vehicle.allInPrice)}</strong><small>/hari</small></span>
           </div>
           {vehicle.selfDrivePrice !== null ? (
             <div className="price-row price-row--secondary">
-              <span><strong>Lepas Kunci</strong><small>Tanpa driver & BBM</small></span>
+              <span><strong>Lepas Kunci</strong><small>Tanpa driver & BBM · bebas 24 jam</small></span>
               <span className="price"><strong>{formatRupiah(vehicle.selfDrivePrice)}</strong><small>/hari</small></span>
             </div>
           ) : (

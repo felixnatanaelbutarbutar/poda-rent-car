@@ -2,7 +2,7 @@ export const faqItems = [
   {
     question: "Apa perbedaan All In dan Lepas Kunci?",
     answer:
-      "All In sudah mencakup driver dan BBM untuk penggunaan dalam area Danau Toba sesuai ketentuan. Lepas Kunci hanya mencakup unit kendaraan, tanpa driver dan BBM."
+      "All In mencakup driver dan BBM dengan layanan driver maksimal 12 jam perjalanan per hari. Lepas Kunci mencakup unit kendaraan tanpa driver dan BBM, dengan pemakaian bebas 24 jam per hari."
   },
   {
     question: "Mobil apa saja yang bisa Lepas Kunci?",

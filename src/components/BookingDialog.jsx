@@ -17,6 +17,7 @@ import {
   getDailyRate,
   getLocalDateMinimum,
   getPackageLabel,
+  getPackageUsageLabel,
   validateBooking
 } from "../utils/booking"
 import { siteConfig } from "../data/site"
@@ -146,6 +147,7 @@ export function BookingDialog({ open, fleet, initialVehicle, initialPackage = "a
       ...values,
       vehicleName: selectedVehicle.name,
       packageLabel: getPackageLabel(values.packageType),
+      usageLabel: getPackageUsageLabel(values.packageType),
       formattedEstimate: formatRupiah(estimate)
     })
   }
@@ -242,12 +244,12 @@ export function BookingDialog({ open, fleet, initialVehicle, initialPackage = "a
                 <div className="package-options">
                   <label className={"radio-card" + (values.packageType === "all-in" ? " is-selected" : "")}>
                     <input type="radio" name="packageType" value="all-in" checked={values.packageType === "all-in"} onChange={updateValue} />
-                    <span><strong>All In</strong><small>Driver + BBM</small></span>
+                    <span><strong>All In</strong><small>Driver + BBM · maks. 12 jam/hari</small></span>
                     {selectedVehicle && <b>{formatRupiah(selectedVehicle.allInPrice)}<small>/hari</small></b>}
                   </label>
                   <label className={"radio-card" + (values.packageType === "self-drive" ? " is-selected" : "") + (!selectedVehicle || selectedVehicle.selfDrivePrice === null ? " is-disabled" : "")}>
                     <input type="radio" name="packageType" value="self-drive" checked={values.packageType === "self-drive"} onChange={updateValue} disabled={!selectedVehicle || selectedVehicle.selfDrivePrice === null} />
-                    <span><strong>Lepas Kunci</strong><small>Tanpa driver & BBM</small></span>
+                    <span><strong>Lepas Kunci</strong><small>Tanpa driver & BBM · bebas 24 jam/hari</small></span>
                     {selectedVehicle?.selfDrivePrice !== null && selectedVehicle && <b>{formatRupiah(selectedVehicle.selfDrivePrice)}<small>/hari</small></b>}
                   </label>
                 </div>
@@ -324,6 +326,7 @@ export function BookingDialog({ open, fleet, initialVehicle, initialPackage = "a
               <dl>
                 <div><dt>Kendaraan</dt><dd>{selectedVehicle.name}</dd></div>
                 <div><dt>Paket</dt><dd>{getPackageLabel(values.packageType)}</dd></div>
+                <div><dt>Waktu pemakaian</dt><dd>{getPackageUsageLabel(values.packageType)}</dd></div>
                 <div><dt>Tanggal & durasi</dt><dd>{values.startDate} · {values.days} hari</dd></div>
                 <div><dt>Penumpang</dt><dd>{values.passengers} orang</dd></div>
                 <div><dt>Rute</dt><dd>{values.pickupLocation} → {values.destination}</dd></div>

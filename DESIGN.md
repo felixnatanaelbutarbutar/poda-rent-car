@@ -385,7 +385,8 @@ Hero memakai komposisi full-bleed: video mengisi seluruh area, sedangkan copy, h
 Gunakan fakta layanan, bukan angka tanpa bukti:
 
 - Area Bandara Silangit & Danau Toba.
-- Maksimal pemakaian All In 24 jam/hari.
+- Layanan driver All In maksimal 12 jam perjalanan/hari.
+- Pemakaian Lepas Kunci bebas 24 jam/hari.
 - Antar-jemput bandara sesuai paket.
 
 Jika kemudian tersedia ulasan terverifikasi, tampilkan setelah armada dan sebelum CTA final. Hindari carousel; gunakan dua atau tiga kartu statis.

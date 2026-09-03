@@ -38,6 +38,12 @@ export function getPackageLabel(packageType) {
     : "All In — Driver + BBM"
 }
 
+export function getPackageUsageLabel(packageType) {
+  return packageType === "self-drive"
+    ? "Bebas 24 jam per hari"
+    : "Driver maksimal 12 jam perjalanan per hari"
+}
+
 export function getLocalDateMinimum(date = new Date()) {
   const offset = date.getTimezoneOffset()
   const localDate = new Date(date.getTime() - offset * 60 * 1000)
@@ -91,38 +97,63 @@ export function validateBooking(values, vehicle) {
   return errors
 }
 
+function formatMessageDetails(rows) {
+  const longestLabel = Math.max(...rows.map(([label]) => label.length))
+
+  return rows
+    .map(([label, value]) => label.padEnd(longestLabel) + " : " + value)
+    .join("\n")
+}
+
 export function buildCarBookingMessage(booking) {
+  const details = formatMessageDetails([
+    ["Nama", booking.name],
+    ["No. WhatsApp", booking.phone],
+    ["Mobil", booking.vehicleName],
+    ["Paket", booking.packageLabel],
+    ["Waktu pemakaian", booking.usageLabel],
+    ["Tanggal mulai", booking.startDate],
+    ["Durasi", booking.days + " hari"],
+    ["Jumlah penumpang", booking.passengers],
+    ["Lokasi jemput", booking.pickupLocation],
+    ["Tujuan/rute", booking.destination],
+    ["Estimasi tarif sewa", booking.formattedEstimate],
+    ["Catatan", booking.notes || "-"]
+  ])
+
   return [
-    "Halo PodaRentCar, saya ingin mengecek ketersediaan kendaraan.",
+    "*PERMINTAAN SEWA MOBIL*",
+    "_Halo PodaRentCar, saya ingin mengecek ketersediaan kendaraan._",
     "",
-    "Nama: " + booking.name,
-    "No. WhatsApp: " + booking.phone,
-    "Mobil: " + booking.vehicleName,
-    "Paket: " + booking.packageLabel,
-    "Tanggal mulai: " + booking.startDate,
-    "Durasi: " + booking.days + " hari",
-    "Jumlah penumpang: " + booking.passengers,
-    "Lokasi jemput: " + booking.pickupLocation,
-    "Tujuan/rute: " + booking.destination,
-    "Estimasi tarif sewa: " + booking.formattedEstimate,
-    "Catatan: " + (booking.notes || "-"),
+    "*DETAIL PEMESANAN*",
+    "```",
+    details,
+    "```",
     "",
-    "Mohon konfirmasi ketersediaan, cakupan rute, syarat, dan harga final. Terima kasih."
+    "_Mohon konfirmasi ketersediaan, cakupan rute, syarat, dan harga final. Terima kasih._"
   ].join("\n")
 }
 
 export function buildAmbulanceMessage(values) {
+  const details = formatMessageDetails([
+    ["Nama", values.name],
+    ["No. WhatsApp", values.phone],
+    ["Tanggal dan waktu", values.dateTime],
+    ["Lokasi jemput", values.pickupLocation],
+    ["Tujuan", values.destination],
+    ["Kebutuhan singkat", values.needs || "-"]
+  ])
+
   return [
-    "Halo PodaRentCar, saya ingin menanyakan layanan sewa ambulans.",
+    "*PERMINTAAN SEWA AMBULANS*",
+    "_Halo PodaRentCar, saya ingin menanyakan layanan sewa ambulans._",
     "",
-    "Nama: " + values.name,
-    "No. WhatsApp: " + values.phone,
-    "Tanggal dan waktu: " + values.dateTime,
-    "Lokasi jemput: " + values.pickupLocation,
-    "Tujuan: " + values.destination,
-    "Kebutuhan singkat: " + (values.needs || "-"),
+    "*DETAIL KEBUTUHAN*",
+    "```",
+    details,
+    "```",
     "",
-    "Mohon info ketersediaan dan harganya. Terima kasih."
+    "_Mohon info ketersediaan dan harganya. Terima kasih._"
   ].join("\n")
 }
 

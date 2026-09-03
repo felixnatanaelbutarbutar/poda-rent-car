@@ -179,7 +179,7 @@ export default function App() {
           <div className="container trust-strip__grid">
             <div><span><Plane size={21} aria-hidden="true" /></span><p><strong>Jemput Bandara</strong><small>Awali perjalanan tanpa repot</small></p></div>
             <div><span><Route size={21} aria-hidden="true" /></span><p><strong>Dalam & luar kota</strong><small>Rute dikonfirmasi lebih dulu</small></p></div>
-            <div><span><Clock size={21} aria-hidden="true" /></span><p><strong>Maks. 24 jam/hari</strong><small>Untuk paket sewa All In</small></p></div>
+            <div><span><Clock size={21} aria-hidden="true" /></span><p><strong>Driver maks. 12 jam/hari</strong><small>Untuk paket sewa All In</small></p></div>
             <div><span><Headphones size={21} aria-hidden="true" /></span><p><strong>Pesan langsung</strong><small>Konsultasi lewat WhatsApp</small></p></div>
           </div>
         </section>
@@ -224,7 +224,7 @@ export default function App() {
               <article className="package-card package-card--all-in">
                 <div className="package-card__header">
                   <span className="package-card__icon"><ShieldCheck size={27} aria-hidden="true" /></span>
-                  <div><span className="eyebrow eyebrow--small">Paling praktis</span><h3>All In</h3><p>Driver + BBM</p></div>
+                  <div><span className="eyebrow eyebrow--small">Paling praktis</span><h3>All In</h3><p>Driver + BBM · maks. 12 jam/hari</p></div>
                 </div>
                 <div className="package-card__column">
                   <h4>Termasuk</h4>
@@ -241,7 +241,7 @@ export default function App() {
               <article className="package-card package-card--self-drive">
                 <div className="package-card__header">
                   <span className="package-card__icon"><KeyRound size={27} aria-hidden="true" /></span>
-                  <div><span className="eyebrow eyebrow--small">Lebih fleksibel</span><h3>Lepas Kunci</h3><p>Tanpa driver & BBM</p></div>
+                  <div><span className="eyebrow eyebrow--small">Lebih fleksibel</span><h3>Lepas Kunci</h3><p>Tanpa driver & BBM · bebas 24 jam/hari</p></div>
                 </div>
                 <div className="package-card__column">
                   <h4>Termasuk</h4>

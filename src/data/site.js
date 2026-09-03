@@ -16,7 +16,7 @@ export const siteConfig = {
 export const allInIncludes = [
   "Jasa driver dan BBM",
   "Penggunaan dalam area Danau Toba",
-  "Pemakaian maksimal 24 jam per hari",
+  "Driver maksimal 12 jam perjalanan per hari",
   "1× penjemputan bandara di awal",
   "1× pengantaran bandara di akhir"
 ]
@@ -28,7 +28,10 @@ export const allInExcludes = [
   "Tiket masuk destinasi wisata"
 ]
 
-export const selfDriveIncludes = ["Unit kendaraan selama durasi yang disepakati"]
+export const selfDriveIncludes = [
+  "Unit kendaraan selama durasi yang disepakati",
+  "Pemakaian bebas 24 jam per hari"
+]
 
 export const selfDriveExcludes = [
   "Driver dan BBM",
