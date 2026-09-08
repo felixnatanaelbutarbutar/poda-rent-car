@@ -2,7 +2,7 @@ export const faqItems = [
   {
     question: "Apa perbedaan All In dan Lepas Kunci?",
     answer:
-      "All In mencakup driver dan BBM dengan layanan driver maksimal 12 jam perjalanan per hari. Lepas Kunci mencakup unit kendaraan tanpa driver dan BBM, dengan pemakaian bebas 24 jam per hari."
+      "All In mencakup jasa driver dengan layanan maksimal 12 jam perjalanan per hari. Lepas Kunci mencakup unit kendaraan tanpa driver, dengan pemakaian bebas 24 jam per hari."
   },
   {
     question: "Mobil apa saja yang bisa Lepas Kunci?",

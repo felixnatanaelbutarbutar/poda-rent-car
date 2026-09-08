@@ -14,7 +14,7 @@ export const siteConfig = {
 }
 
 export const allInIncludes = [
-  "Jasa driver dan BBM",
+  "Jasa driver",
   "Penggunaan dalam area Danau Toba",
   "Driver maksimal 12 jam perjalanan per hari",
   "1× penjemputan bandara di awal",
@@ -34,7 +34,7 @@ export const selfDriveIncludes = [
 ]
 
 export const selfDriveExcludes = [
-  "Driver dan BBM",
+  "Driver",
   "Parkir, tol, dan tiket ferry",
   "Tiket masuk destinasi",
   "Biaya operasional perjalanan lainnya"

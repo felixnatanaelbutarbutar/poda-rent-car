@@ -199,6 +199,27 @@ export const fleet = [
     visualTone: "ocean",
     description: "Van premium yang lega untuk perjalanan rombongan lebih nyaman.",
     sortOrder: 100
+  },
+  {
+    id: "ambulance",
+    name: "Ambulans",
+    shortName: "Ambulans",
+    image: "/img/car/ambulance.jpeg",
+    imageAlt: "Ambulans yang tersedia untuk disewa melalui PodaRentCar",
+    categories: ["ambulance"],
+    categoryLabel: "Layanan Khusus",
+    passengerCapacityWithDriver: null,
+    totalSeatsSelfDrive: null,
+    capacityLabel: "Sesuai kebutuhan medis",
+    fuelLabel: "Diesel",
+    fuelNeedsConfirmation: false,
+    allInPrice: null,
+    selfDrivePrice: null,
+    priceOnRequest: true,
+    bodyType: "ambulance",
+    visualTone: "cloud",
+    description: "Tersedia untuk kebutuhan medis dan evakuasi. Harga berdasarkan jarak, waktu, dan kebutuhan. Tanya langsung via WhatsApp.",
+    sortOrder: 110
   }
 ]
 
@@ -207,5 +228,6 @@ export const fleetFilters = [
   { id: "family", label: "Keluarga" },
   { id: "suv", label: "SUV" },
   { id: "premium", label: "Premium" },
-  { id: "group", label: "Rombongan" }
+  { id: "group", label: "Rombongan" },
+  { id: "ambulance", label: "Ambulans" }
 ]

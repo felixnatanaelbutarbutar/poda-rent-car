@@ -158,8 +158,8 @@
 
 .brand__logo {
   position: relative;
-  width: 188px;
-  height: 58px;
+  width: 160px;
+  height: 49px;
   display: block;
   overflow: hidden;
 }
@@ -168,10 +168,20 @@
   position: absolute;
   top: 50%;
   left: 0;
-  width: 188px;
+  width: 160px;
   max-width: none;
   height: auto;
   transform: translateY(-50%);
+}
+
+@media (min-width: 420px) {
+  .brand__logo {
+    width: 188px;
+    height: 58px;
+  }
+  .brand__logo img {
+    width: 188px;
+  }
 }
 
 .site-header {
@@ -754,6 +764,43 @@
   text-align: center;
 }
 
+.vehicle-card__por-badge {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  right: 14px;
+  border-radius: var(--radius-pill);
+  background: #065f46;
+  padding: 6px 10px;
+  color: #a7f3d0;
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.vehicle-card__por-section {
+  padding-top: 4px;
+}
+
+.vehicle-card__por-info {
+  display: grid;
+  gap: 4px;
+  border-radius: 12px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+}
+
+.vehicle-card__por-info span {
+  color: #15803d;
+  font-size: 0.73rem;
+  line-height: 1.5;
+}
+
+.vehicle-card__por-info span:first-child {
+  font-weight: 700;
+}
+
 .fleet-note {
   display: flex;
   gap: 11px;
@@ -935,56 +982,119 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  counter-reset: item;
 }
 
-.steps-grid li {
+.steps-grid__item {
   position: relative;
-  min-height: 220px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.055);
-  padding: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 28px 28px 24px;
+  backdrop-filter: blur(2px);
+  transition: background-color 220ms ease, border-color 220ms ease, transform 220ms ease;
 }
 
-.steps-grid__number {
+.steps-grid__item:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+}
+
+.steps-grid__item--highlight {
+  border-color: rgba(37, 211, 102, 0.35);
+  background: rgba(37, 211, 102, 0.07);
+}
+
+.steps-grid__item--highlight:hover {
+  background: rgba(37, 211, 102, 0.12);
+  border-color: rgba(37, 211, 102, 0.5);
+}
+
+.steps-grid__index {
   position: absolute;
-  top: -7px;
-  right: 14px;
-  color: rgba(255, 255, 255, 0.06);
-  font-size: 5.5rem;
-  font-weight: 800;
+  top: -14px;
+  right: 16px;
+  color: rgba(255, 255, 255, 0.05);
+  font-size: 7rem;
+  font-weight: 900;
   line-height: 1;
+  letter-spacing: -0.05em;
+  pointer-events: none;
+  user-select: none;
+}
+
+.steps-grid__body {
+  position: relative;
+  z-index: 1;
 }
 
 .steps-grid__icon {
-  width: 49px;
-  height: 49px;
+  width: 52px;
+  height: 52px;
   display: grid;
   place-items: center;
-  margin-bottom: 36px;
-  border-radius: 15px;
-  background: rgba(255, 255, 255, 0.12);
+  margin-bottom: 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.1);
   color: #fbd29e;
+  transition: background-color 200ms ease;
+}
+
+.steps-grid__item--highlight .steps-grid__icon {
+  background: rgba(37, 211, 102, 0.18);
+  color: #4ade80;
+}
+
+.steps-grid__item:hover .steps-grid__icon {
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .steps-grid h3 {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   color: #fff;
-  font-size: 1.18rem;
+  font-size: 1.22rem;
+  letter-spacing: -0.02em;
 }
 
 .steps-grid p {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.68);
-  font-size: 0.83rem;
+  margin: 0 0 16px;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.steps-grid__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 5px 11px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.steps-grid__tag--wa {
+  background: rgba(37, 211, 102, 0.18);
+  color: #4ade80;
 }
 
 .steps-cta {
   display: flex;
-  justify-content: center;
-  margin-top: 28px;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 32px;
+  text-align: center;
+}
+
+.steps-cta__note {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.75rem;
 }
 
 .ambulance-section {
@@ -1933,6 +2043,10 @@
 
   .steps-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .steps-grid__item {
+    min-height: 280px;
   }
 
   .ambulance-card {

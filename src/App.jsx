@@ -41,7 +41,6 @@ import { Logo } from "./components/Logo"
 import { HeroIllustration } from "./components/HeroIllustration"
 import { VehicleCard } from "./components/VehicleCard"
 import { BookingDialog } from "./components/BookingDialog"
-import { AmbulanceDialog } from "./components/AmbulanceDialog"
 
 const navLinks = [
   { href: "#armada", label: "Armada" },
@@ -52,7 +51,7 @@ const navLinks = [
 
 const startingPrice = Math.min(
   ...fleet.flatMap((vehicle) =>
-    [vehicle.allInPrice, vehicle.selfDrivePrice].filter((price) => price !== null)
+    [vehicle.allInPrice, vehicle.selfDrivePrice].filter((price) => price !== null && price !== undefined)
   )
 )
 
@@ -87,7 +86,6 @@ export default function App() {
   const [bookingOpen, setBookingOpen] = useState(false)
   const [selectedVehicle, setSelectedVehicle] = useState(null)
   const [initialPackage, setInitialPackage] = useState("all-in")
-  const [ambulanceOpen, setAmbulanceOpen] = useState(false)
 
   const filteredFleet = activeFilter === "all"
     ? fleet
@@ -96,6 +94,11 @@ export default function App() {
   const quickWhatsApp = createWhatsAppUrl(
     siteConfig.whatsappNumber,
     "Halo PodaRentCar, saya ingin bertanya tentang rental mobil di Bandara Silangit dan Danau Toba."
+  )
+
+  const pickupWhatsApp = createWhatsAppUrl(
+    siteConfig.whatsappNumber,
+    "Halo PodaRentCar 👋\n\nSaya ingin tanya, apakah bisa jemput di lokasi saya?\n\nTolong konfirmasi ketersediaan driver dan perkiraan biayanya. Terima kasih!"
   )
 
   useEffect(() => {
@@ -195,7 +198,7 @@ export default function App() {
             </div>
             <div className="seo-intro__copy">
               <p>PodaRentCar melayani sewa mobil di sekitar Bandara Silangit menuju Balige, Parapat, Pulau Samosir, dan kawasan Danau Toba. Armada tersedia untuk keluarga, perjalanan bisnis, tamu VIP, hingga rombongan.</p>
-              <p>Anda dapat memilih rental mobil All In dengan driver dan BBM atau mobil lepas kunci untuk kendaraan tertentu. Harga harian, kapasitas, serta jenis bahan bakar ditampilkan agar pemesanan lebih mudah.</p>
+              <p>Anda dapat memilih rental mobil All In dengan driver atau mobil lepas kunci untuk kendaraan tertentu. Harga harian, kapasitas, serta jenis bahan bakar ditampilkan agar pemesanan lebih mudah.</p>
               <a className="text-link" href="#armada">Lihat harga rental mobil <ArrowRight size={17} aria-hidden="true" /></a>
             </div>
           </div>
@@ -224,7 +227,7 @@ export default function App() {
               <article className="package-card package-card--all-in">
                 <div className="package-card__header">
                   <span className="package-card__icon"><ShieldCheck size={27} aria-hidden="true" /></span>
-                  <div><span className="eyebrow eyebrow--small">Paling praktis</span><h3>All In</h3><p>Driver + BBM · maks. 12 jam/hari</p></div>
+                  <div><span className="eyebrow eyebrow--small">Paling praktis</span><h3>Dengan Driver</h3><p>Dengan driver · maks. 12 jam/hari</p></div>
                 </div>
                 <div className="package-card__column">
                   <h4>Termasuk</h4>
@@ -235,13 +238,13 @@ export default function App() {
                   <PackageList items={allInExcludes} excluded />
                 </div>
                 <p className="package-card__notice">Tarif yang ditampilkan berlaku untuk penggunaan area Danau Toba. Rute luar area dikonfirmasi melalui WhatsApp.</p>
-                <button className="button button--primary button--full" type="button" onClick={() => openBooking(null, "all-in")}>Pilih paket All In <ArrowRight size={18} aria-hidden="true" /></button>
+                <button className="button button--primary button--full" type="button" onClick={() => openBooking(null, "all-in")}>Sewa dengan driver <ArrowRight size={18} aria-hidden="true" /></button>
               </article>
 
               <article className="package-card package-card--self-drive">
                 <div className="package-card__header">
                   <span className="package-card__icon"><KeyRound size={27} aria-hidden="true" /></span>
-                  <div><span className="eyebrow eyebrow--small">Lebih fleksibel</span><h3>Lepas Kunci</h3><p>Tanpa driver & BBM · bebas 24 jam/hari</p></div>
+                  <div><span className="eyebrow eyebrow--small">Lebih fleksibel</span><h3>Berkendara Sendiri</h3><p>Tanpa driver · bebas 24 jam/hari</p></div>
                 </div>
                 <div className="package-card__column">
                   <h4>Termasuk</h4>
@@ -256,7 +259,7 @@ export default function App() {
                   <div>{fleet.filter((vehicle) => vehicle.selfDrivePrice !== null).map((vehicle) => <span key={vehicle.id}>{vehicle.shortName}</span>)}</div>
                 </div>
                 <p className="package-card__notice">Syarat dokumen, jaminan, batas wilayah, dan serah terima kendaraan wajib dikonfirmasi melalui WhatsApp.</p>
-                <button className="button button--outline button--full" type="button" onClick={() => openBooking(null, "self-drive")}>Pilih lepas kunci <ArrowRight size={18} aria-hidden="true" /></button>
+                <button className="button button--outline button--full" type="button" onClick={() => openBooking(null, "self-drive")}>Berkendara sendiri <ArrowRight size={18} aria-hidden="true" /></button>
               </article>
             </div>
           </div>
@@ -264,30 +267,44 @@ export default function App() {
 
         <section className="section steps-section" id="cara-pesan">
           <div className="container">
-            <SectionHeader eyebrow="Cara pesan" title="Tiga langkah, lalu lanjut di WhatsApp" description="Tidak perlu membuat akun atau menunggu balasan email." align="center" />
+            <SectionHeader eyebrow="Cara pesan" title="Tiga langkah, lanjut di WhatsApp" description="Tidak perlu daftar akun atau tunggu balasan email." align="center" />
             <ol className="steps-grid">
-              <li><span className="steps-grid__number">01</span><span className="steps-grid__icon"><CalendarCheck size={25} aria-hidden="true" /></span><h3>Pilih mobil & tanggal</h3><p>Tentukan kendaraan, paket, durasi, dan jumlah penumpang.</p></li>
-              <li><span className="steps-grid__number">02</span><span className="steps-grid__icon"><Navigation size={25} aria-hidden="true" /></span><h3>Isi rute perjalanan</h3><p>Masukkan lokasi jemput, tujuan, dan catatan yang penting.</p></li>
-              <li><span className="steps-grid__number">03</span><span className="steps-grid__icon"><MessageCircle size={25} aria-hidden="true" /></span><h3>Konfirmasi WhatsApp</h3><p>Pesan terformat otomatis untuk pengecekan unit dan harga final.</p></li>
+              <li className="steps-grid__item">
+                <div className="steps-grid__index" aria-hidden="true">01</div>
+                <div className="steps-grid__body">
+                  <div className="steps-grid__icon"><CalendarCheck size={26} aria-hidden="true" /></div>
+                  <h3>Pilih mobil & tanggal</h3>
+                  <p>Tentukan kendaraan, paket, durasi, dan jumlah penumpang yang ikut.</p>
+                  <span className="steps-grid__tag">Gratis, tanpa akun</span>
+                </div>
+              </li>
+              <li className="steps-grid__item">
+                <div className="steps-grid__index" aria-hidden="true">02</div>
+                <div className="steps-grid__body">
+                  <div className="steps-grid__icon"><Navigation size={26} aria-hidden="true" /></div>
+                  <h3>Isi rute & detail</h3>
+                  <p>Masukkan titik jemput, tujuan, nama, dan catatan perjalanan.</p>
+                  <span className="steps-grid__tag">Hanya 2 menit</span>
+                </div>
+              </li>
+              <li className="steps-grid__item steps-grid__item--highlight">
+                <div className="steps-grid__index" aria-hidden="true">03</div>
+                <div className="steps-grid__body">
+                  <div className="steps-grid__icon"><MessageCircle size={26} aria-hidden="true" /></div>
+                  <h3>Lanjut di WhatsApp</h3>
+                  <p>Pesan terformat otomatis — langsung cek unit dan harga final bersama tim.</p>
+                  <span className="steps-grid__tag steps-grid__tag--wa"><MessageCircle size={13} aria-hidden="true" /> Konfirmasi via WhatsApp</span>
+                </div>
+              </li>
             </ol>
-            <div className="steps-cta"><button className="button button--primary button--large" type="button" onClick={() => openBooking()}>Mulai pesan kendaraan <ArrowRight size={19} aria-hidden="true" /></button></div>
+            <div className="steps-cta">
+              <button className="button button--primary button--large" type="button" onClick={() => openBooking()}>Mulai pesan kendaraan <ArrowRight size={19} aria-hidden="true" /></button>
+              <p className="steps-cta__note">Respon cepat · Tanpa deposit awal</p>
+            </div>
           </div>
         </section>
 
-        <section className="section ambulance-section" id="ambulans">
-          <div className="container ambulance-card">
-            <div className="ambulance-card__art">
-              <img className="ambulance-card__image" src="/img/car/ambulance.jpeg" alt="Mobil ambulans yang tersedia untuk disewa melalui PodaRentCar" width="1130" height="1277" loading="lazy" decoding="async" />
-            </div>
-            <div className="ambulance-card__content">
-              <span className="eyebrow">Layanan tambahan</span>
-              <h2>Sewa ambulans sesuai kebutuhan perjalanan</h2>
-              <p>Sampaikan waktu, lokasi jemput, tujuan, dan kebutuhan singkat. Harga serta ketersediaan dinegosiasikan langsung melalui WhatsApp.</p>
-              <div className="ambulance-card__points"><span><Check size={17} aria-hidden="true" /> Cek ketersediaan cepat</span><span><Check size={17} aria-hidden="true" /> Detail kebutuhan via chat</span></div>
-              <button className="button button--whatsapp button--large" type="button" onClick={() => setAmbulanceOpen(true)}><MessageCircle size={19} aria-hidden="true" /> Tanya sewa ambulans</button>
-            </div>
-          </div>
-        </section>
+
 
         <section className="section confidence-section">
           <div className="container confidence-grid">
@@ -333,7 +350,7 @@ export default function App() {
                 <li><Route size={19} aria-hidden="true" /><span><strong>Dalam & luar kota</strong><small>Cakupan dan tambahan biaya dikonfirmasi</small></span></li>
               </ul>
               <div className="location-actions">
-                <a className="button button--primary" href={quickWhatsApp} target="_blank" rel="noreferrer"><MessageCircle size={18} aria-hidden="true" /> Atur titik jemput</a>
+                <a className="button button--whatsapp" href={pickupWhatsApp} target="_blank" rel="noreferrer"><MessageCircle size={18} aria-hidden="true" /> Tanya lokasi jemput</a>
                 <a className="button button--soft" href={siteConfig.mapsExternalUrl} target="_blank" rel="noreferrer"><ExternalLink size={18} aria-hidden="true" /> Buka Google Maps</a>
               </div>
             </div>
@@ -360,13 +377,12 @@ export default function App() {
         <div className="container site-footer__bottom"><span>© {new Date().getFullYear()} PodaRentCar</span><span>Bandara Silangit · Danau Toba</span></div>
       </footer>
 
-      <div className={"mobile-sticky" + (showSticky && !bookingOpen && !ambulanceOpen ? " is-visible" : "")} aria-hidden={!showSticky || bookingOpen || ambulanceOpen}>
+      <div className={"mobile-sticky" + (showSticky && !bookingOpen ? " is-visible" : "")} aria-hidden={!showSticky || bookingOpen}>
         <div><small>Harga mulai</small><strong>{formatRupiah(startingPrice)}<span>/hari</span></strong></div>
         <button className="button button--primary" type="button" onClick={() => openBooking()}>Pesan sekarang</button>
       </div>
 
       <BookingDialog open={bookingOpen} fleet={fleet} initialVehicle={selectedVehicle} initialPackage={initialPackage} onClose={() => setBookingOpen(false)} />
-      <AmbulanceDialog open={ambulanceOpen} onClose={() => setAmbulanceOpen(false)} />
     </>
   )
 }

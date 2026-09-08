@@ -34,8 +34,8 @@ export function calculateEstimate(vehicle, packageType, days) {
 
 export function getPackageLabel(packageType) {
   return packageType === "self-drive"
-    ? "Lepas Kunci — Tanpa Driver & BBM"
-    : "All In — Driver + BBM"
+    ? "Lepas Kunci — Tanpa Driver"
+    : "All In — Dengan Driver"
 }
 
 export function getPackageUsageLabel(packageType) {
@@ -106,55 +106,66 @@ function formatMessageDetails(rows) {
 }
 
 export function buildCarBookingMessage(booking) {
-  const details = formatMessageDetails([
-    ["Nama", booking.name],
-    ["No. WhatsApp", booking.phone],
-    ["Mobil", booking.vehicleName],
-    ["Paket", booking.packageLabel],
-    ["Waktu pemakaian", booking.usageLabel],
-    ["Tanggal mulai", booking.startDate],
-    ["Durasi", booking.days + " hari"],
-    ["Jumlah penumpang", booking.passengers],
-    ["Lokasi jemput", booking.pickupLocation],
-    ["Tujuan/rute", booking.destination],
-    ["Estimasi tarif sewa", booking.formattedEstimate],
-    ["Catatan", booking.notes || "-"]
-  ])
-
-  return [
+  const lines = [
     "*PERMINTAAN SEWA MOBIL*",
-    "_Halo PodaRentCar, saya ingin mengecek ketersediaan kendaraan._",
+    "_PodaRentCar — Rental Mobil Silangit_",
     "",
-    "*DETAIL PEMESANAN*",
-    "```",
-    details,
-    "```",
+    "Halo, saya ingin mengecek ketersediaan kendaraan.",
     "",
-    "_Mohon konfirmasi ketersediaan, cakupan rute, syarat, dan harga final. Terima kasih._"
-  ].join("\n")
+    "*Pemesan*",
+    "Nama         : " + booking.name,
+    "No. WA       : " + booking.phone,
+    "",
+    "*Kendaraan*",
+    "Mobil        : " + booking.vehicleName,
+    "Paket        : " + booking.packageLabel,
+    "",
+    "*Jadwal*",
+    "Tanggal      : " + booking.startDate,
+    "Durasi       : " + booking.days + " hari",
+    "Penumpang    : " + booking.passengers + " orang",
+    "",
+    "*Rute*",
+    "Jemput       : " + booking.pickupLocation,
+    "Tujuan       : " + booking.destination,
+    "",
+    "*Estimasi Tarif*",
+    booking.formattedEstimate + " (belum termasuk biaya di luar paket)",
+  ]
+
+  if (booking.notes) {
+    lines.push("", "*Catatan*", booking.notes)
+  }
+
+  lines.push("", "Mohon konfirmasi ketersediaan unit, rute, syarat, dan harga finalnya. Terima kasih!")
+
+  return lines.join("\n")
 }
 
 export function buildAmbulanceMessage(values) {
-  const details = formatMessageDetails([
-    ["Nama", values.name],
-    ["No. WhatsApp", values.phone],
-    ["Tanggal dan waktu", values.dateTime],
-    ["Lokasi jemput", values.pickupLocation],
-    ["Tujuan", values.destination],
-    ["Kebutuhan singkat", values.needs || "-"]
-  ])
-
-  return [
+  const lines = [
     "*PERMINTAAN SEWA AMBULANS*",
-    "_Halo PodaRentCar, saya ingin menanyakan layanan sewa ambulans._",
+    "_PodaRentCar — Layanan Khusus_",
     "",
-    "*DETAIL KEBUTUHAN*",
-    "```",
-    details,
-    "```",
+    "Halo, saya ingin menanyakan layanan sewa ambulans.",
     "",
-    "_Mohon info ketersediaan dan harganya. Terima kasih._"
-  ].join("\n")
+    "*Penghubung*",
+    "Nama         : " + values.name,
+    "No. WA       : " + values.phone,
+    "",
+    "*Waktu & Lokasi*",
+    "Perkiraan    : " + values.dateTime,
+    "Jemput       : " + values.pickupLocation,
+    "Tujuan       : " + values.destination,
+  ]
+
+  if (values.needs) {
+    lines.push("", "*Kebutuhan Khusus*", values.needs)
+  }
+
+  lines.push("", "Mohon info ketersediaan dan harganya. Terima kasih!")
+
+  return lines.join("\n")
 }
 
 export function createWhatsAppUrl(number, message) {

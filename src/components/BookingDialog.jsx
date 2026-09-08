@@ -225,7 +225,7 @@ export function BookingDialog({ open, fleet, initialVehicle, initialPackage = "a
                 <label htmlFor="vehicleId">Kendaraan</label>
                 <select id="vehicleId" name="vehicleId" value={values.vehicleId} onChange={selectVehicle} aria-invalid={Boolean(errors.vehicleId)} aria-describedby={errors.vehicleId ? "vehicle-error" : undefined}>
                   <option value="">Pilih salah satu kendaraan</option>
-                  {fleet.map((vehicle) => (
+                  {fleet.filter((v) => !v.priceOnRequest).map((vehicle) => (
                     <option value={vehicle.id} key={vehicle.id}>{vehicle.name} — mulai {formatRupiah(Math.min(vehicle.allInPrice, vehicle.selfDrivePrice || vehicle.allInPrice))}/hari</option>
                   ))}
                 </select>
@@ -244,12 +244,12 @@ export function BookingDialog({ open, fleet, initialVehicle, initialPackage = "a
                 <div className="package-options">
                   <label className={"radio-card" + (values.packageType === "all-in" ? " is-selected" : "")}>
                     <input type="radio" name="packageType" value="all-in" checked={values.packageType === "all-in"} onChange={updateValue} />
-                    <span><strong>All In</strong><small>Driver + BBM · maks. 12 jam/hari</small></span>
+                    <span><strong>All In</strong><small>Dengan driver · maks. 12 jam/hari</small></span>
                     {selectedVehicle && <b>{formatRupiah(selectedVehicle.allInPrice)}<small>/hari</small></b>}
                   </label>
                   <label className={"radio-card" + (values.packageType === "self-drive" ? " is-selected" : "") + (!selectedVehicle || selectedVehicle.selfDrivePrice === null ? " is-disabled" : "")}>
                     <input type="radio" name="packageType" value="self-drive" checked={values.packageType === "self-drive"} onChange={updateValue} disabled={!selectedVehicle || selectedVehicle.selfDrivePrice === null} />
-                    <span><strong>Lepas Kunci</strong><small>Tanpa driver & BBM · bebas 24 jam/hari</small></span>
+                    <span><strong>Lepas Kunci</strong><small>Tanpa driver · bebas 24 jam/hari</small></span>
                     {selectedVehicle?.selfDrivePrice !== null && selectedVehicle && <b>{formatRupiah(selectedVehicle.selfDrivePrice)}<small>/hari</small></b>}
                   </label>
                 </div>
