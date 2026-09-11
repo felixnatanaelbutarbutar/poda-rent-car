@@ -4,7 +4,6 @@ import {
   BadgeCheck,
   CalendarCheck,
   Check,
-  CheckCircle2,
   ChevronDown,
   Clock,
   Camera,
@@ -12,7 +11,6 @@ import {
   ExternalLink,
   Fuel,
   Headphones,
-  KeyRound,
   MapPin,
   Menu,
   MessageCircle,
@@ -24,23 +22,17 @@ import {
   ShieldCheck,
   Ship,
   Users,
-  X,
-  XCircle
+  X
 } from "lucide-react"
 import { fleet, fleetFilters } from "./data/fleet"
 import { faqItems } from "./data/faq"
-import {
-  allInExcludes,
-  allInIncludes,
-  selfDriveExcludes,
-  selfDriveIncludes,
-  siteConfig
-} from "./data/site"
+import { siteConfig } from "./data/site"
 import { createWhatsAppUrl, formatRupiah } from "./utils/booking"
 import { Logo } from "./components/Logo"
 import { HeroIllustration } from "./components/HeroIllustration"
 import { VehicleCard } from "./components/VehicleCard"
 import { BookingDialog } from "./components/BookingDialog"
+import { RentalPackagesSection } from "./components/RentalPackagesSection"
 
 const navLinks = [
   { href: "#armada", label: "Armada" },
@@ -62,19 +54,6 @@ function SectionHeader({ eyebrow, title, description, align = "left" }) {
       <h2>{title}</h2>
       {description && <p>{description}</p>}
     </div>
-  )
-}
-
-function PackageList({ items, excluded = false }) {
-  return (
-    <ul className="package-list">
-      {items.map((item) => (
-        <li key={item}>
-          {excluded ? <XCircle size={18} aria-hidden="true" /> : <CheckCircle2 size={18} aria-hidden="true" />}
-          <span>{item}</span>
-        </li>
-      ))}
-    </ul>
   )
 }
 
@@ -220,50 +199,7 @@ export default function App() {
           </div>
         </section>
 
-        <section className="section package-section" id="paket">
-          <div className="container">
-            <SectionHeader eyebrow="Paket sewa" title="Pilih bantuan penuh atau berkendara sendiri" description="Keduanya dibuat transparan agar Anda tahu apa yang termasuk sebelum mengirim pesanan." align="center" />
-            <div className="package-grid">
-              <article className="package-card package-card--all-in">
-                <div className="package-card__header">
-                  <span className="package-card__icon"><ShieldCheck size={27} aria-hidden="true" /></span>
-                  <div><span className="eyebrow eyebrow--small">Paling praktis</span><h3>Dengan Driver</h3><p>Dengan driver · maks. 12 jam/hari</p></div>
-                </div>
-                <div className="package-card__column">
-                  <h4>Termasuk</h4>
-                  <PackageList items={allInIncludes} />
-                </div>
-                <div className="package-card__column package-card__column--excluded">
-                  <h4>Tidak termasuk</h4>
-                  <PackageList items={allInExcludes} excluded />
-                </div>
-                <p className="package-card__notice">Tarif yang ditampilkan berlaku untuk penggunaan area Danau Toba. Rute luar area dikonfirmasi melalui WhatsApp.</p>
-                <button className="button button--primary button--full" type="button" onClick={() => openBooking(null, "all-in")}>Sewa dengan driver <ArrowRight size={18} aria-hidden="true" /></button>
-              </article>
-
-              <article className="package-card package-card--self-drive">
-                <div className="package-card__header">
-                  <span className="package-card__icon"><KeyRound size={27} aria-hidden="true" /></span>
-                  <div><span className="eyebrow eyebrow--small">Lebih fleksibel</span><h3>Berkendara Sendiri</h3><p>Tanpa driver · bebas 24 jam/hari</p></div>
-                </div>
-                <div className="package-card__column">
-                  <h4>Termasuk</h4>
-                  <PackageList items={selfDriveIncludes} />
-                </div>
-                <div className="package-card__column package-card__column--excluded">
-                  <h4>Tidak termasuk</h4>
-                  <PackageList items={selfDriveExcludes} excluded />
-                </div>
-                <div className="eligible-cars">
-                  <strong>Tersedia untuk</strong>
-                  <div>{fleet.filter((vehicle) => vehicle.selfDrivePrice !== null).map((vehicle) => <span key={vehicle.id}>{vehicle.shortName}</span>)}</div>
-                </div>
-                <p className="package-card__notice">Syarat dokumen, jaminan, batas wilayah, dan serah terima kendaraan wajib dikonfirmasi melalui WhatsApp.</p>
-                <button className="button button--outline button--full" type="button" onClick={() => openBooking(null, "self-drive")}>Berkendara sendiri <ArrowRight size={18} aria-hidden="true" /></button>
-              </article>
-            </div>
-          </div>
-        </section>
+        <RentalPackagesSection fleet={fleet} onChoose={(packageType) => openBooking(null, packageType)} />
 
         <section className="section steps-section" id="cara-pesan">
           <div className="container">

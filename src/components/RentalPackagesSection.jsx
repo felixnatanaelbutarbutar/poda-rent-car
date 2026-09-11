@@ -1,4 +1,4 @@
-import { ArrowRight, Check, Clock3, KeyRound, Minus, Route, ShieldCheck } from "lucide-react"
+import { ArrowRight, Check, ChevronDown, KeyRound, Minus, CarFront } from "lucide-react"
 import { allInExcludes, allInIncludes, selfDriveExcludes, selfDriveIncludes } from "../data/site"
 import { formatRupiah } from "../utils/booking"
 import "../styles/rental-packages.css"
@@ -9,95 +9,98 @@ function PackageFeatures({ items, excluded = false }) {
       {items.map((item) => (
         <li key={item}>
           {excluded ? <Minus size={16} aria-hidden="true" /> : <Check size={16} aria-hidden="true" />}
-          <span>{item}</span>
+          {item.includes("jam per hari") ? <strong>{item}</strong> : <span>{item}</span>}
         </li>
       ))}
     </ul>
   )
 }
 
+function startingPrice(vehicles, priceKey) {
+  const prices = vehicles.map((vehicle) => vehicle[priceKey]).filter((price) => Number.isFinite(price) && price > 0)
+  return prices.length ? Math.min(...prices) : null
+}
+
 export function RentalPackagesSection({ fleet, onChoose }) {
-  const selfDriveFleet = fleet.filter((vehicle) => vehicle.selfDrivePrice !== null)
-  const allInStartingPrice = Math.min(...fleet.map((vehicle) => vehicle.allInPrice))
-  const selfDriveStartingPrice = Math.min(...selfDriveFleet.map((vehicle) => vehicle.selfDrivePrice))
+  const selfDriveFleet = fleet.filter((vehicle) => Number.isFinite(vehicle.selfDrivePrice) && vehicle.selfDrivePrice > 0)
+  const plans = [
+    {
+      id: "all-in",
+      title: "Dengan driver",
+      description: "Untuk Anda yang ingin duduk nyaman sepanjang perjalanan.",
+      icon: CarFront,
+      price: startingPrice(fleet, "allInPrice"),
+      includes: allInIncludes,
+      excludes: allInExcludes,
+      vehicles: "Tersedia untuk seluruh armada mobil.",
+      note: "Tarif untuk area Danau Toba. Rute luar area dikonfirmasi terlebih dahulu.",
+      action: "Sewa dengan driver"
+    },
+    {
+      id: "self-drive",
+      title: "Lepas kunci",
+      description: "Untuk Anda yang ingin mengatur sendiri waktu dan rute.",
+      icon: KeyRound,
+      price: startingPrice(selfDriveFleet, "selfDrivePrice"),
+      includes: selfDriveIncludes,
+      excludes: selfDriveExcludes,
+      vehicles: selfDriveFleet.length ? selfDriveFleet.map((vehicle) => vehicle.shortName).join(", ") + "." : "Ketersediaan unit dikonfirmasi melalui WhatsApp.",
+      note: "Syarat, jaminan, batas wilayah, dan serah terima dikonfirmasi terlebih dahulu.",
+      action: "Pilih lepas kunci"
+    }
+  ]
 
   return (
     <section className="rental-plans" id="paket" aria-labelledby="rental-plans-title">
       <div className="container">
         <header className="rental-plans__heading">
           <div>
-            <span className="eyebrow">Paket sewa · Sesuai gaya Anda</span>
-            <h2 id="rental-plans-title">Pilih bantuan penuh atau <em>berkendara sendiri.</em></h2>
+            <span className="eyebrow">Paket sewa</span>
+            <h2 id="rental-plans-title">Dengan driver,<br /><em>atau lepas kunci.</em></h2>
           </div>
-          <p>Duduk nyaman bersama driver, atau pegang kendali perjalanan Anda. Dua pilihan, dengan rincian biaya yang jelas sejak awal.</p>
+          <p>Bandingkan waktu pemakaian dan fasilitasnya.<br />Pilih yang sesuai dengan rencana perjalanan Anda.</p>
         </header>
 
-        <div className="rental-plans__grid">
-          <article className="rental-plan rental-plan--assisted" aria-labelledby="all-in-title">
-            <div className="rental-plan__top">
-              <div className="rental-plan__kicker"><span>Untuk perjalanan tanpa repot</span><ShieldCheck size={23} aria-hidden="true" /></div>
-              <h3 id="all-in-title">All In</h3>
-              <p className="rental-plan__subtitle">Anda menikmati perjalanan.<br />Kami yang menyetir.</p>
-              <div className="rental-plan__allowance">
-                <p><strong>12</strong><span>jam<small>per hari</small></span></p>
-                <span className="rental-plan__allowance-note"><Clock3 size={18} aria-hidden="true" />Maksimal perjalanan<br />bersama driver</span>
-              </div>
-              <div className="rental-plan__ribbon"><Check size={16} aria-hidden="true" /> Driver sudah termasuk</div>
-            </div>
-            <div className="rental-plan__body">
-              <div className="rental-plan__details">
+        <div className="rental-plans__comparison">
+          {plans.map(({ id, title, description, icon: Icon, price, includes, excludes, vehicles, note, action }) => (
+            <article className={"rental-plan rental-plan--" + id} key={id} aria-labelledby={id + "-title"}>
+              <header className="rental-plan__header">
                 <div>
-                  <h4>Sudah termasuk</h4>
-                  <PackageFeatures items={allInIncludes} />
+                  <h3 id={id + "-title"}>{title}</h3>
+                  <p>{description}</p>
                 </div>
-                <div>
-                  <h4>Di luar tarif sewa</h4>
-                  <PackageFeatures items={allInExcludes} excluded />
-                </div>
-              </div>
-              <p className="rental-plan__note"><Route size={18} aria-hidden="true" /><span>Tarif berlaku untuk area Danau Toba. Rute luar area dikonfirmasi melalui WhatsApp.</span></p>
-              <div className="rental-plan__footer">
-                <p className="rental-plan__price"><span>Mulai dari</span><strong>{formatRupiah(allInStartingPrice)}<small>/hari</small></strong></p>
-                <button className="button button--primary button--full" type="button" onClick={() => onChoose("all-in")}>Pilih paket All In <ArrowRight size={18} aria-hidden="true" /></button>
-              </div>
-            </div>
-          </article>
+                <Icon className="rental-plan__icon" size={28} strokeWidth={1.5} aria-hidden="true" />
+              </header>
 
-          <article className="rental-plan rental-plan--independent" aria-labelledby="self-drive-title">
-            <div className="rental-plan__top">
-              <div className="rental-plan__kicker"><span>Untuk kebebasan berkendara</span><KeyRound size={23} aria-hidden="true" /></div>
-              <h3 id="self-drive-title">Lepas Kunci</h3>
-              <p className="rental-plan__subtitle">Rute Anda. Ritme Anda.<br />Nikmati kebebasannya.</p>
-              <div className="rental-plan__allowance">
-                <p><strong>24</strong><span>jam<small>per hari</small></span></p>
-                <span className="rental-plan__allowance-note"><Clock3 size={18} aria-hidden="true" />Bebas pemakaian<br />selama masa sewa</span>
-              </div>
-              <div className="rental-plan__ribbon"><KeyRound size={16} aria-hidden="true" /> Unit kendaraan · Tanpa driver</div>
-            </div>
-            <div className="rental-plan__body">
-              <div className="rental-plan__details">
-                <div>
-                  <h4>Sudah termasuk</h4>
-                  <PackageFeatures items={selfDriveIncludes} />
-                  <div className="rental-plan__cars">
-                    <h4>Pilihan kendaraan</h4>
-                    <ul>{selfDriveFleet.map((vehicle) => <li key={vehicle.id}>{vehicle.shortName}</li>)}</ul>
-                  </div>
-                </div>
-                <div>
-                  <h4>Di luar tarif sewa</h4>
-                  <PackageFeatures items={selfDriveExcludes} excluded />
+              <p className="rental-plan__price">
+                <span>{price === null ? "Tarif sewa" : "Mulai dari"}</span>
+                <strong>{price === null ? "Hubungi kami" : formatRupiah(price)}{price !== null && <small>/ hari</small>}</strong>
+              </p>
+
+              <div className="rental-plan__inclusions">
+                <h4>Termasuk dalam paket</h4>
+                <PackageFeatures items={includes} />
+                <div className="rental-plan__vehicles">
+                  <h4>Pilihan kendaraan</h4>
+                  <p>{vehicles}</p>
                 </div>
               </div>
-              <p className="rental-plan__note"><ShieldCheck size={18} aria-hidden="true" /><span>Syarat, jaminan, batas wilayah, dan serah terima kendaraan dikonfirmasi melalui WhatsApp.</span></p>
-              <div className="rental-plan__footer">
-                <p className="rental-plan__price"><span>Mulai dari</span><strong>{formatRupiah(selfDriveStartingPrice)}<small>/hari</small></strong></p>
-                <button className="button button--outline button--full" type="button" onClick={() => onChoose("self-drive")}>Pilih lepas kunci <ArrowRight size={18} aria-hidden="true" /></button>
-              </div>
-            </div>
-          </article>
+
+              <details className="rental-plan__exclusions">
+                <summary>Biaya di luar paket<ChevronDown size={18} aria-hidden="true" /></summary>
+                <PackageFeatures items={excludes} excluded />
+              </details>
+
+              <footer className="rental-plan__footer">
+                <p>{note}</p>
+                <button className="rental-plan__choose" type="button" onClick={() => onChoose(id)}>
+                  {action}<ArrowRight size={18} aria-hidden="true" />
+                </button>
+              </footer>
+            </article>
+          ))}
         </div>
-        <p className="rental-plans__footnote">Harga menyesuaikan kendaraan dan durasi sewa. Ketersediaan serta harga final dikonfirmasi bersama tim.</p>
+        <p className="rental-plans__footnote">Harga mengikuti pilihan mobil dan durasi sewa. Ketersediaan serta harga final dikonfirmasi melalui WhatsApp.</p>
       </div>
     </section>
   )
