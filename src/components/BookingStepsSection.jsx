@@ -1,74 +1,126 @@
-import { ArrowRight, CalendarCheck, Check, MapPin, MessageCircle, Route } from "lucide-react"
+import { ArrowRight, CalendarCheck, Check, MapPin, MessageCircle, Sparkles } from "lucide-react"
 import "../styles/booking-steps.css"
 
-const bookingSteps = [
+const steps = [
   {
     number: "01",
+    badge: "Langkah 1",
+    badgeType: "blue",
     icon: CalendarCheck,
-    title: "Pilih mobil & tanggal",
-    description: "Temukan kendaraan yang pas, lalu tentukan paket, tanggal, durasi, dan jumlah penumpang.",
-    detail: "Mobil pilihan. Jadwal Anda."
+    title: "Pilih Mobil & Tanggal",
+    description:
+      "Pilih kendaraan yang paling cocok untuk rombongan Anda. Tentukan paket sewa (Dengan Driver atau Lepas Kunci) dan durasi hari yang diperlukan.",
+    feature: "10+ pilihan armada bersih & terawat"
   },
   {
     number: "02",
-    icon: Route,
-    title: "Ceritakan rute perjalanan",
-    description: "Isi lokasi penjemputan, tujuan, dan kebutuhan khusus agar kami dapat menyiapkan perjalanan Anda.",
-    detail: "Dari titik jemput, ke tujuan Anda."
+    badge: "Langkah 2",
+    badgeType: "orange",
+    icon: MapPin,
+    title: "Tentukan Titik Jemput",
+    description:
+      "Tentukan lokasi penjemputan di Bandara Silangit, hotel, atau alamat rumah. Beritahu destinasi wisata Danau Toba yang ingin Anda kunjungi.",
+    feature: "Siap jemput langsung di bandara"
   },
   {
     number: "03",
+    badge: "Langkah 3",
+    badgeType: "green",
     icon: MessageCircle,
-    title: "Lanjutkan di WhatsApp",
-    description: "Kirim ringkasan pesanan yang sudah tersusun. Tim kami akan mengonfirmasi ketersediaan unit dan harga final.",
-    detail: "Detail jelas sebelum berangkat."
+    title: "Konfirmasi di WhatsApp",
+    description:
+      "Format pesanan tersusun rapi otomatis. Kirim ke WhatsApp kami untuk memastikan jadwal, ketersediaan unit, dan harga final tanpa biaya tersembunyi.",
+    feature: "Respon cepat · Tanpa deposit awal",
+    highlight: true
   }
 ]
 
 export function BookingStepsSection({ onBook }) {
   return (
-    <section className="booking-journey" id="cara-pesan" aria-labelledby="booking-journey-title">
-      <div className="container booking-journey__layout">
-        <div className="booking-journey__intro">
-          <span className="booking-journey__eyebrow"><span aria-hidden="true" /> Cara pesan</span>
-          <h2 id="booking-journey-title">Tiga langkah,<br />lalu lanjut di <em>WhatsApp</em></h2>
-          <p className="booking-journey__description">Perjalanan yang menyenangkan dimulai dari rencana yang jelas. Siapkan detailnya, kami bantu langkah selanjutnya.</p>
-          <button className="booking-journey__cta" type="button" onClick={() => onBook()}>
-            <span>Mulai pesan kendaraan</span>
-            <ArrowRight size={20} aria-hidden="true" />
-          </button>
-          <p className="booking-journey__note"><Check size={16} aria-hidden="true" /> Tanpa perlu membuat akun</p>
-          <div className="booking-journey__signature" aria-hidden="true">
-            <MapPin size={18} />
-            <span>Rencana Anda</span>
-            <span className="booking-journey__signature-line" />
-            <span>Perjalanan kita</span>
-          </div>
+    <section className="booking-steps-section" id="cara-pesan" aria-labelledby="steps-section-title">
+      <div className="container">
+        {/* Section Header */}
+        <div className="booking-steps__header">
+          <span className="eyebrow">
+            <Sparkles size={15} aria-hidden="true" />
+            Alur Pemesanan Cepat
+          </span>
+          <h2 id="steps-section-title">
+            3 Langkah Mudah, <br />
+            <em>Langsung Siap Jalan.</em>
+          </h2>
+          <p className="booking-steps__subtitle">
+            Tanpa ribet daftar akun dan tanpa formulir panjang. Semua proses dibuat transparan, cepat, dan langsung terhubung bersama tim kami di WhatsApp.
+          </p>
         </div>
 
-        <div className="booking-journey__guide">
-          <div className="booking-journey__guide-heading">
-            <span>Alur pemesanan</span>
-            <span>01 — 03</span>
-          </div>
-          <ol className="booking-journey__steps" role="list">
-            {bookingSteps.map(({ number, icon: Icon, title, description, detail }) => (
-              <li className="booking-journey__step" key={number}>
-                <span className="booking-journey__number" aria-hidden="true">{number}</span>
-                <div className="booking-journey__step-content">
-                  <div className="booking-journey__step-heading">
-                    <h3>{title}</h3>
-                    <Icon size={23} strokeWidth={1.7} aria-hidden="true" />
+        {/* 3 Step Cards Grid */}
+        <ol className="booking-steps__grid" role="list">
+          {steps.map((step, idx) => {
+            const Icon = step.icon
+            return (
+              <li
+                key={step.number}
+                className={`booking-step-card ${step.highlight ? "booking-step-card--highlight" : ""}`}
+              >
+                {/* Top Badge & Number */}
+                <div className="booking-step-card__top">
+                  <span className={`booking-step-card__badge booking-step-card__badge--${step.badgeType}`}>
+                    {step.badge}
+                  </span>
+                  <div className={`booking-step-card__icon-wrap booking-step-card__icon-wrap--${step.badgeType}`}>
+                    <Icon size={24} strokeWidth={1.9} aria-hidden="true" />
                   </div>
-                  <p>{description}</p>
-                  <span className="booking-journey__detail">{detail}</span>
                 </div>
+
+                {/* Content */}
+                <div className="booking-step-card__body">
+                  <h3 className="booking-step-card__title">{step.title}</h3>
+                  <p className="booking-step-card__desc">{step.description}</p>
+                </div>
+
+                {/* Perk Badge */}
+                <div className="booking-step-card__footer">
+                  <div className="booking-step-card__perk">
+                    <Check size={14} strokeWidth={2.5} aria-hidden="true" />
+                    <span>{step.feature}</span>
+                  </div>
+                </div>
+
+                {/* Arrow Connector for Desktop */}
+                {idx < steps.length - 1 && (
+                  <div className="booking-step-card__connector" aria-hidden="true">
+                    <ArrowRight size={18} />
+                  </div>
+                )}
               </li>
-            ))}
-          </ol>
-          <div className="booking-journey__confirmation">
-            <MessageCircle size={18} aria-hidden="true" />
-            <p>Pesanan dikonfirmasi langsung bersama tim kami.</p>
+            )
+          })}
+        </ol>
+
+        {/* Bottom CTA Area */}
+        <div className="booking-steps__cta-wrap">
+          <button
+            type="button"
+            className="booking-steps__button"
+            onClick={() => onBook && onBook()}
+          >
+            <span>Mulai Pesan Kendaraan</span>
+            <ArrowRight size={19} aria-hidden="true" />
+          </button>
+
+          <div className="booking-steps__trust">
+            <span>
+              <Check size={15} aria-hidden="true" /> Tanpa registrasi akun
+            </span>
+            <span className="booking-steps__trust-dot" aria-hidden="true">•</span>
+            <span>
+              <Check size={15} aria-hidden="true" /> Konfirmasi langsung via WhatsApp
+            </span>
+            <span className="booking-steps__trust-dot" aria-hidden="true">•</span>
+            <span>
+              <Check size={15} aria-hidden="true" /> Tanpa deposit awal
+            </span>
           </div>
         </div>
       </div>

@@ -33,6 +33,7 @@ import { HeroIllustration } from "./components/HeroIllustration"
 import { VehicleCard } from "./components/VehicleCard"
 import { BookingDialog } from "./components/BookingDialog"
 import { RentalPackagesSection } from "./components/RentalPackagesSection"
+import { BookingStepsSection } from "./components/BookingStepsSection"
 
 const navLinks = [
   { href: "#armada", label: "Armada" },
@@ -201,44 +202,7 @@ export default function App() {
 
         <RentalPackagesSection fleet={fleet} onChoose={(packageType) => openBooking(null, packageType)} />
 
-        <section className="section steps-section" id="cara-pesan">
-          <div className="container">
-            <SectionHeader eyebrow="Cara pesan" title="Tiga langkah, lanjut di WhatsApp" description="Tidak perlu daftar akun atau tunggu balasan email." align="center" />
-            <ol className="steps-grid">
-              <li className="steps-grid__item">
-                <div className="steps-grid__index" aria-hidden="true">01</div>
-                <div className="steps-grid__body">
-                  <div className="steps-grid__icon"><CalendarCheck size={26} aria-hidden="true" /></div>
-                  <h3>Pilih mobil & tanggal</h3>
-                  <p>Tentukan kendaraan, paket, durasi, dan jumlah penumpang yang ikut.</p>
-                  <span className="steps-grid__tag">Gratis, tanpa akun</span>
-                </div>
-              </li>
-              <li className="steps-grid__item">
-                <div className="steps-grid__index" aria-hidden="true">02</div>
-                <div className="steps-grid__body">
-                  <div className="steps-grid__icon"><Navigation size={26} aria-hidden="true" /></div>
-                  <h3>Isi rute & detail</h3>
-                  <p>Masukkan titik jemput, tujuan, nama, dan catatan perjalanan.</p>
-                  <span className="steps-grid__tag">Hanya 2 menit</span>
-                </div>
-              </li>
-              <li className="steps-grid__item steps-grid__item--highlight">
-                <div className="steps-grid__index" aria-hidden="true">03</div>
-                <div className="steps-grid__body">
-                  <div className="steps-grid__icon"><MessageCircle size={26} aria-hidden="true" /></div>
-                  <h3>Lanjut di WhatsApp</h3>
-                  <p>Pesan terformat otomatis — langsung cek unit dan harga final bersama tim.</p>
-                  <span className="steps-grid__tag steps-grid__tag--wa"><MessageCircle size={13} aria-hidden="true" /> Konfirmasi via WhatsApp</span>
-                </div>
-              </li>
-            </ol>
-            <div className="steps-cta">
-              <button className="button button--primary button--large" type="button" onClick={() => openBooking()}>Mulai pesan kendaraan <ArrowRight size={19} aria-hidden="true" /></button>
-              <p className="steps-cta__note">Respon cepat · Tanpa deposit awal</p>
-            </div>
-          </div>
-        </section>
+        <BookingStepsSection onBook={() => openBooking()} />
 
 
 
