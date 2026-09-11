@@ -1,0 +1,19 @@
+{
+  "name": "PodaRentCar - Rental Mobil Silangit",
+  "short_name": "PodaRentCar",
+  "icons": [
+    {
+      "src": "/favicon-48x48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo-icon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#075985",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}
