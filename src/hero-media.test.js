@@ -9,10 +9,12 @@ test("hero tidak menampilkan ilustrasi fallback sebelum video siap", () => {
   assert.doesNotMatch(heroSource, /currentTime\s*=/)
 })
 
-test("video hero memakai autoplay, loop, dan preload", () => {
-  assert.match(heroSource, /autoPlay=/)
+test("video hero diputar setelah mount dan tidak berebut unduhan dengan poster", () => {
+  assert.doesNotMatch(heroSource, /autoPlay=/)
+  assert.match(heroSource, /video\.play\(\)/)
+  assert.match(heroSource, /prefers-reduced-motion: reduce/)
   assert.match(heroSource, /\bloop\b/)
-  assert.match(heroSource, /preload="auto"/)
+  assert.match(heroSource, /preload="none"/)
   assert.match(heroSource, /poster="\/hero-poster\.jpg"/)
   assert.match(heroSource, /\/hero\.mp4#t=3/)
 })

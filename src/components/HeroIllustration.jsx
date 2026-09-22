@@ -3,7 +3,6 @@ import { Pause, Play } from "lucide-react"
 
 export function HeroIllustration() {
   const videoRef = useRef(null)
-  const shouldAutoPlay = !window.matchMedia("(prefers-reduced-motion: reduce)").matches
   const [isPlaying, setIsPlaying] = useState(false)
   const [hasError, setHasError] = useState(false)
   const [isReady, setIsReady] = useState(false)
@@ -13,7 +12,7 @@ export function HeroIllustration() {
     if (!video) return
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    if (reduceMotion) {
+    if (reduceMotion || navigator.connection?.saveData) {
       video.pause()
       return
     }
@@ -36,11 +35,10 @@ export function HeroIllustration() {
       <video
         ref={videoRef}
         className="hero-art__video"
-        autoPlay={shouldAutoPlay}
         loop
         muted
         playsInline
-        preload="auto"
+        preload="none"
         poster="/hero-poster.jpg"
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
@@ -57,7 +55,7 @@ export function HeroIllustration() {
           Jemput bandara tersedia
         </div>
       )}
-      {isReady && !hasError && (
+      {!hasError && (
         <button className="hero-art__control" type="button" onClick={togglePlayback} aria-label={isPlaying ? "Jeda video hero" : "Putar video hero"}>
           {isPlaying ? <Pause size={17} aria-hidden="true" /> : <Play size={17} aria-hidden="true" />}
         </button>

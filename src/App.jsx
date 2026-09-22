@@ -34,6 +34,7 @@ import { VehicleCard } from "./components/VehicleCard"
 import { BookingDialog } from "./components/BookingDialog"
 import { RentalPackagesSection } from "./components/RentalPackagesSection"
 import { BookingStepsSection } from "./components/BookingStepsSection"
+import { ServiceLinks } from "./components/ServiceLinks"
 
 const navLinks = [
   { href: "#armada", label: "Armada" },
@@ -186,7 +187,7 @@ export default function App() {
 
         <section className="section fleet-section" id="armada">
           <div className="container">
-            <SectionHeader eyebrow="Armada PodaRentCar" title="Kendaraan untuk setiap gaya perjalanan" description="Dari perjalanan berdua hingga rombongan besar. Pilih berdasarkan kapasitas, bahan bakar, dan paket yang Anda perlukan." />
+            <SectionHeader eyebrow="Armada PodaRentCar" title="Pilihan mobil dan harga rental di Silangit" description="Dari perjalanan berdua hingga rombongan besar. Bandingkan tarif per hari, kapasitas, bahan bakar, dan paket yang Anda perlukan." />
             <div className="filter-chips" aria-label="Filter jenis kendaraan">
               {fleetFilters.map((filter) => (
                 <button type="button" key={filter.id} className={activeFilter === filter.id ? "is-active" : ""} aria-pressed={activeFilter === filter.id} onClick={() => setActiveFilter(filter.id)}>{filter.label}</button>
@@ -203,9 +204,7 @@ export default function App() {
         <RentalPackagesSection fleet={fleet} onChoose={(packageType) => openBooking(null, packageType)} />
 
         <BookingStepsSection onBook={() => openBooking()} />
-
-
-
+        <ServiceLinks />
         <section className="section confidence-section">
           <div className="container confidence-grid">
             <div>
@@ -271,7 +270,7 @@ export default function App() {
       <footer className="site-footer">
         <div className="container site-footer__grid">
           <div className="site-footer__brand"><Logo /><p>Rental mobil untuk penjemputan Bandara Silangit, wisata Danau Toba, dan perjalanan dalam maupun luar kota.</p></div>
-          <div><h2>Jelajahi</h2>{navLinks.map((link) => <a href={link.href} key={link.href}>{link.label}</a>)}<a href="#ambulans">Sewa Ambulans</a></div>
+          <div><h2>Jelajahi</h2>{navLinks.map((link) => <a href={link.href} key={link.href}>{link.label}</a>)}<a href="#layanan">Panduan layanan rental</a></div>
           <div><h2>Hubungi</h2><a href={quickWhatsApp} target="_blank" rel="noreferrer"><Phone size={16} aria-hidden="true" /> {siteConfig.whatsappDisplay}</a><a href={siteConfig.instagramUrl} target="_blank" rel="noreferrer"><Camera size={16} aria-hidden="true" /> {siteConfig.instagramHandle}</a><a href={siteConfig.tiktokUrl} target="_blank" rel="noreferrer"><Music2 size={16} aria-hidden="true" /> TikTok PodaRentCar</a></div>
         </div>
         <div className="container site-footer__bottom"><span>© {new Date().getFullYear()} PodaRentCar</span><span>Bandara Silangit · Danau Toba</span></div>

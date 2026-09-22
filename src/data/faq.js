@@ -1,4 +1,15 @@
+import { fleet } from "./fleet.js"
+import { formatRupiah } from "../utils/booking.js"
+
+const rentalCars = fleet.filter((vehicle) => !vehicle.priceOnRequest)
+const selfDriveMinimum = Math.min(...rentalCars.map((vehicle) => vehicle.selfDrivePrice).filter(Number.isFinite))
+const driverMinimum = Math.min(...rentalCars.map((vehicle) => vehicle.allInPrice).filter(Number.isFinite))
+
 export const faqItems = [
+  {
+    question: "Berapa harga rental mobil Silangit per hari?",
+    answer: `Tarif lepas kunci mulai ${formatRupiah(selfDriveMinimum)}/hari dan paket dengan driver mulai ${formatRupiah(driverMinimum)}/hari. Estimasi mengikuti jenis mobil dan durasi sewa. Rute, ketersediaan unit, biaya di luar paket, dan harga final dikonfirmasi melalui WhatsApp.`
+  },
   {
     question: "Apa perbedaan All In dan Lepas Kunci?",
     answer:
@@ -32,6 +43,6 @@ export const faqItems = [
   {
     question: "Bagaimana menanyakan layanan ambulans?",
     answer:
-      "Pilih tombol Tanyakan Ambulans, isi waktu dan rute singkat, lalu kirim ke WhatsApp. Harga dan ketersediaan akan diinformasikan langsung."
+      "Pada kartu Ambulans di daftar armada, pilih Tanya harga via WhatsApp. Sampaikan waktu dan rute kebutuhan Anda; harga serta ketersediaan dikonfirmasi langsung."
   }
 ]

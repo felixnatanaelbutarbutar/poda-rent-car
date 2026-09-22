@@ -2425,7 +2425,7 @@
   object-fit: contain;
   object-position: center;
   padding: 10px 14px;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 280ms ease;
 }
 

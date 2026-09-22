@@ -7,6 +7,7 @@ Website rental mobil statis untuk area Bandara Silangit dan Danau Toba. Pengguna
 - [CONTEXT.md](./CONTEXT.md) — sumber kebenaran untuk data armada, harga, paket, kontak, aturan bisnis, dan kriteria penerimaan.
 - [DESIGN.md](./DESIGN.md) — arah visual, UI/UX style guide, tokens, layout, komponen, responsivitas, aksesibilitas, dan QA.
 - [README.md](./README.md) — arsitektur teknis dan panduan implementasi.
+- [docs/SEO.md](./docs/SEO.md) — pemeriksaan publikasi, Search Console, dan pemeliharaan SEO lokal.
 
 Jika terdapat perbedaan:
 
@@ -31,7 +32,7 @@ Jika terdapat perbedaan:
 Rilis awal sengaja sederhana:
 
 - ReactJS dengan JavaScript/JSX.
-- Vite sebagai development server dan bundler.
+- Vite sebagai development server dan bundler, diikuti prerender HTML statis (SSG).
 - CSS biasa dengan custom properties/design tokens.
 - Lucide React untuk ikon antarmuka.
 - Native HTML form, dialog, details/summary bila sesuai.
@@ -40,7 +41,7 @@ Rilis awal sengaja sederhana:
 - Tanpa login.
 - Tanpa payment gateway.
 - Tanpa state-management library.
-- Tanpa React Router untuk rilis satu halaman.
+- Tanpa React Router; halaman layanan memakai tautan native ke direktori statis.
 
 Dependensi runtime yang disarankan hanya:
 
@@ -66,8 +67,11 @@ Perintah pengecekan dan production build:
 ~~~bash
 npm test
 npm run build
+npm run test:seo
 npm run preview
 ~~~
+
+`npm run build` menjalankan Vite lalu `scripts/prerender.mjs`. Hasilnya lima halaman berisi HTML lengkap, `404.html`, `robots.txt`, dan `sitemap.xml` di `dist/`. Jalankan `test:seo` setelah build karena pengujian ini membaca hasil produksi.
 
 ## Arsitektur
 
@@ -82,7 +86,8 @@ poda-rent-car/
 │   │   └── car/
 │   │       ├── README.md
 │   │       └── *.png / *.jpg / *.jpeg
-│   └── robots.txt
+├── scripts/
+│   └── prerender.mjs
 ├── src/
 │   ├── components/
 │   │   ├── AmbulanceDialog.jsx
@@ -94,6 +99,7 @@ poda-rent-car/
 │   ├── data/
 │   │   ├── fleet.js
 │   │   ├── faq.js
+│   │   ├── services.js
 │   │   └── site.js
 │   ├── utils/
 │   │   ├── booking.js
@@ -103,7 +109,13 @@ poda-rent-car/
 │   │   ├── global.css
 │   │   └── app.css
 │   ├── App.jsx
+│   ├── entry-server.jsx
+│   ├── seo.js
 │   └── main.jsx
+├── tests/
+│   └── seo-build.test.js
+├── docs/
+│   └── SEO.md
 ├── CONTEXT.md
 ├── DESIGN.md
 ├── README.md
@@ -195,6 +207,7 @@ Aturan data:
 ~~~js
 export const siteConfig = {
   name: "PodaRentCar",
+  url: "https://www.podarentcar.com",
   whatsappDisplay: "+62 813-7624-2320",
   whatsappNumber: "6281376242320",
   instagramHandle: "@andresilalahi28",
@@ -427,7 +440,7 @@ Gunakan anchor id berikut:
 #lokasi
 ~~~
 
-Header nav memakai anchor native. Tidak perlu React Router.
+Header beranda memakai anchor native. Empat halaman layanan memakai tautan URL native dan masing-masing memiliki HTML produksi sendiri; daftar rute tersedia di [docs/SEO.md](./docs/SEO.md). Tidak perlu React Router.
 
 ## Urutan implementasi
 
@@ -549,29 +562,15 @@ Jangan memaksakan skor dengan menghapus fungsi atau label yang dibutuhkan penggu
 
 ## SEO dan metadata
 
-index.html atau komponen head harus memuat:
+`src/seo.js` memusatkan pembuatan metadata, canonical, structured data, robots, dan sitemap. Domain serta kontak berasal dari `src/data/site.js`; harga berasal dari `src/data/fleet.js`. Isi dan FAQ halaman layanan berada di `src/data/services.js`, dengan nominal FAQ diturunkan dari data armada. Jangan menyalin angka harga secara manual ke metadata atau FAQ.
 
-- lang="id";
-- title dari CONTEXT.md;
-- meta description;
-- viewport width=device-width, initial-scale=1;
-- canonical setelah domain final tersedia;
-- Open Graph title, description, image, dan locale id_ID;
-- theme-color #075985.
+Setiap halaman memiliki judul dan deskripsi sesuai layanannya, canonical sendiri, Open Graph, Twitter Card, serta konten utama dalam HTML awal. Bahasa dokumen adalah `id`. Build menghasilkan beranda dan empat halaman layanan: lepas kunci, dengan driver, Hiace, dan Danau Toba. Halaman 404 diberi `noindex` dan tidak dimasukkan ke sitemap.
 
-Structured data `AutoRental` berisi nama, telepon, area layanan, koordinat, sosial, dan katalog layanan yang sudah dikonfirmasi. Tambahkan alamat lengkap, jam operasional, domain, dan logo absolut setelah datanya tersedia; jangan mengarang data bisnis.
+Domain canonical adalah `https://www.podarentcar.com`, mengikuti redirect domain live ke versi `www` yang telah diperiksa. Path halaman layanan memakai garis miring akhir. `dist/robots.txt` dan `dist/sitemap.xml` dibuat ulang saat build; keduanya tidak lagi dikelola sebagai file di `public/`.
 
-### Pekerjaan SEO setelah domain aktif
+Structured data mencakup `AutoRental`, `WebSite`, `WebPage`, serta `Service` dan `BreadcrumbList` untuk halaman layanan. Alamat lengkap belum terverifikasi; jangan menambahkan alamat, jam operasional, atau rating rekaan. Schema ini tidak menjamin kelayakan atau tampilan rich result LocalBusiness.
 
-Optimasi teknis di repository adalah fondasi, bukan jaminan posisi pertama. Setelah website dipublikasikan:
-
-1. tambahkan URL domain final pada canonical, Open Graph, dan structured data;
-2. buat sitemap.xml menggunakan domain final lalu daftarkan di Google Search Console;
-3. verifikasi Google Business Profile dengan nama, telepon, kategori, dan lokasi yang konsisten;
-4. minta pelanggan nyata memberikan ulasan di Google Business Profile;
-5. unggah foto armada asli dan perbarui konten harga secara berkala;
-6. bangun tautan lokal yang relevan dari bisnis wisata, penginapan, dan direktori resmi sekitar Danau Toba;
-7. pantau kueri seperti “rental mobil Silangit”, “sewa mobil Bandara Silangit”, dan “rental mobil lepas kunci Silangit” melalui Search Console.
+Perubahan ini belum dipublikasikan dan belum menggunakan akses Search Console atau Google Business Profile. Setelah publikasi, ikuti [panduan operasional SEO](./docs/SEO.md) untuk memeriksa URL, mengirim sitemap, melengkapi profil bisnis, dan mengukur hasil. Optimasi membantu penemuan dan pemahaman konten; posisi pertama tidak dapat dijamin.
 
 ## Privasi dan keamanan
 
@@ -586,7 +585,7 @@ Optimasi teknis di repository adalah fondasi, bukan jaminan posisi pertama. Sete
 
 ## Deployment
 
-Build Vite menghasilkan file statis pada dist/. Dapat di-host di:
+Publikasikan seluruh isi `dist/` setelah urutan `npm test`, `npm run build`, dan `npm run test:seo` berhasil. Build memakai Vite dan prerender; menjalankan `vite build` saja belum menghasilkan semua halaman. Hasil statis dapat di-host di:
 
 - Netlify;
 - Vercel static;
@@ -594,7 +593,9 @@ Build Vite menghasilkan file statis pada dist/. Dapat di-host di:
 - GitHub Pages;
 - shared hosting biasa.
 
-Konfigurasi rewrite SPA tidak wajib karena rilis awal tidak memakai client-side route. Pastikan HTTPS aktif dan domain final dicantumkan pada canonical/metadata.
+Hosting harus menyajikan `index.html` di setiap direktori layanan. Jangan menggunakan wildcard rewrite SPA yang mengubah semua URL menjadi beranda. Atur URL tidak dikenal agar mengembalikan HTTP 404 dengan `404.html`; keberadaan file itu saja belum menjamin status HTTP yang benar pada semua hosting.
+
+Aktifkan HTTPS dan redirect permanen domain tanpa `www` ke `https://www.podarentcar.com`, dengan path tetap utuh. Samakan aturan garis miring akhir dengan canonical dan sitemap. Periksa akses langsung serta refresh setiap URL layanan di produksi, karena preview lokal tidak membuktikan konfigurasi hosting.
 
 ## Content update workflow
 
@@ -603,9 +604,9 @@ Ketika harga berubah:
 1. pemilik mengesahkan harga baru;
 2. perbarui CONTEXT.md;
 3. perbarui src/data/fleet.js;
-4. jalankan test kalkulasi;
+4. jalankan `npm test`;
 5. cek tampilan angka pada 320 px;
-6. build dan deploy;
+6. jalankan `npm run build`, lalu `npm run test:seo`; periksa harga di tabel, FAQ, dan structured data sebelum deploy;
 7. catat tanggal pembaruan harga pada UI bila diinginkan.
 
 Jangan mengubah harga langsung di VehicleCard.

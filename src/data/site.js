@@ -1,5 +1,8 @@
 export const siteConfig = {
   name: "PodaRentCar",
+  url: "https://www.podarentcar.com",
+  socialImage: "/hero-poster.jpg",
+  serviceAreas: ["Bandara Silangit", "Danau Toba", "Balige", "Parapat", "Pulau Samosir"],
   whatsappDisplay: "+62 813-7624-2320",
   whatsappNumber: "6281376242320",
   instagramHandle: "@andresilalahi28",
